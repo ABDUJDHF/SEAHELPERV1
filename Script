@@ -1,0 +1,191 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Sea Helper v1 (discord d.6a)",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "by GANI_DEVOP",
+    ConfigurationSaving = {
+        Enabled = false,
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "Key System",
+        Subtitle = "Enter access key",
+        Note = "Contact owner for key",
+        FileName = "Key",
+        SaveKey = false,
+        GrabKeyFromSite = false,
+        Key = {"GANI_DEVOP"}
+    }
+})
+
+local MainTab = Window:CreateTab("Main", 4483362458)
+local ESPTab = Window:CreateTab("ESP", 4483362458)
+
+-- ⚡ Boat Speed Slider
+MainTab:CreateSlider({
+    Name = "Boat Speed",
+    Range = {0, 500},
+    Increment = 1,
+    Suffix = "Studs/s",
+    CurrentValue = 0,
+    Flag = "BoatSpeed",
+    Callback = function(Value)
+        local Boats = workspace:FindFirstChild("Boats")
+        if Boats then
+            for _, boat in pairs(Boats:GetChildren()) do
+                local vehicleSeat = boat:FindFirstChild("VehicleSeat")
+                if vehicleSeat and vehicleSeat:IsA("VehicleSeat") then
+                    vehicleSeat.MaxSpeed = Value
+                end
+            end
+        end
+    end,
+})
+
+-- 🗑️ Remove Rocks
+local rocksRemoved = false
+MainTab:CreateButton({
+    Name = "🗑️ Remove Rocks",
+    Callback = function()
+        if rocksRemoved then
+            Rayfield:Notify({Title = "Already Removed", Content = "Rocks already removed!", Duration = 3})
+            return
+        end
+        rocksRemoved = true
+        local Rocks = workspace:FindFirstChild("Rocks")
+        if Rocks then Rocks:Destroy() end
+        Rayfield:Notify({Title = "Success!", Content = "Rocks removed!", Duration = 5})
+    end,
+})
+
+MainTab:CreateParagraph({Title = "Note", Content = "Removes rocks permanently (until rejoin)"})
+
+-- 🌫️ Remove Fog
+local fogRemoved = false
+MainTab:CreateButton({
+    Name = "🌫️ Remove Fog",
+    Callback = function()
+        if fogRemoved then
+            Rayfield:Notify({Title = "Already Removed", Content = "Fog already removed!", Duration = 3})
+            return
+        end
+        fogRemoved = true
+        local Lighting = game:GetService("Lighting")
+        Lighting.FogEnd = 100000
+        Lighting.FogStart = 0
+        Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+        if Lighting:FindFirstChild("LightingLayers") then
+            Lighting.LightingLayers:Destroy()
+        end
+        Rayfield:Notify({Title = "Success!", Content = "Fog removed!", Duration = 5})
+    end,
+})
+
+MainTab:CreateParagraph({Title = "Note", Content = "Removes fog permanently (until rejoin)"})
+
+-- ============================================
+-- 🔮 ESP Advanced Blox Fruit Dealer
+-- ============================================
+local dealerESP = nil
+local espActive = false
+
+ESPTab:CreateButton({
+    Name = "🔮 ESP Advanced Blox Fruit Dealer",
+    Callback = function()
+        local player = game:GetService("Players").LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local NPCs = ReplicatedStorage:FindFirstChild("NPCs")
+        if not NPCs then
+            Rayfield:Notify({Title = "Error", Content = "NPCs folder not found!", Duration = 3})
+            return
+        end
+        
+        local dealer = NPCs:FindFirstChild("Advanced Fruit Dealer")
+        if not dealer then
+            Rayfield:Notify({Title = "Error", Content = "Advanced Fruit Dealer not found!", Duration = 3})
+            return
+        end
+        
+        if espActive then
+            if dealerESP then
+                dealerESP:Destroy()
+                dealerESP = nil
+            end
+            espActive = false
+            Rayfield:Notify({Title = "ESP", Content = "Advanced Fruit Dealer ESP disabled", Duration = 3})
+            return
+        end
+        
+        espActive = true
+        
+        dealerESP = Instance.new("BillboardGui")
+        dealerESP.Name = "DealerESP"
+        dealerESP.Size = UDim2.new(0, 200, 0, 80)
+        dealerESP.StudsOffset = Vector3.new(0, 5, 0)
+        dealerESP.AlwaysOnTop = true
+        
+        local label = Instance.new("TextLabel")
+        label.Name = "DealerLabel"
+        label.Size = UDim2.new(1, 0, 0.6, 0)
+        label.BackgroundTransparency = 1
+        label.Text = "🔮 Advanced Fruit Dealer"
+        label.TextColor3 = Color3.fromRGB(255, 0, 255)
+        label.TextStrokeTransparency = 0
+        label.TextScaled = true
+        label.Font = Enum.Font.GothamBold
+        label.Parent = dealerESP
+        
+        local distanceLabel = Instance.new("TextLabel")
+        distanceLabel.Name = "DistanceLabel"
+        distanceLabel.Size = UDim2.new(1, 0, 0.4, 0)
+        distanceLabel.Position = UDim2.new(0, 0, 0.6, 0)
+        distanceLabel.BackgroundTransparency = 1
+        distanceLabel.Text = "Distance: Calculating..."
+        distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        distanceLabel.TextStrokeTransparency = 0
+        distanceLabel.TextScaled = true
+        distanceLabel.Font = Enum.Font.GothamSemibold
+        distanceLabel.Parent = dealerESP
+        
+        local dealerClone = dealer:Clone()
+        dealerClone.Name = "DealerESPClone"
+        dealerClone.Parent = workspace
+        
+        for _, part in pairs(dealerClone:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 1
+                part.CanCollide = false
+            end
+        end
+        
+        dealerESP.Adornee = dealerClone:FindFirstChild("HumanoidRootPart") or dealerClone:FindFirstChildWhichIsA("BasePart")
+        dealerESP.Parent = dealerESP.Adornee
+        
+        spawn(function()
+            while espActive and dealerESP and dealerESP.Parent do
+                local success, err = pcall(function()
+                    if humanoidRootPart and dealerESP.Adornee then
+                        local distance = (humanoidRootPart.Position - dealerESP.Adornee.Position).Magnitude
+                        distanceLabel.Text = string.format("Distance: %.0f studs", distance)
+                    end
+                end)
+                if not success then break end
+                wait(0.1)
+            end
+        end)
+        
+        Rayfield:Notify({Title = "ESP", Content = "Advanced Fruit Dealer ESP enabled!", Duration = 5})
+    end,
+})
+
+ESPTab:CreateParagraph({
+    Title = "Note",
+    Content = "Make sure Mirage island is spawned"
+})
+
+print("✅ Sea Helper v1 Loaded!")
+
