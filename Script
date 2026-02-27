@@ -3,11 +3,11 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
     Name = "Sea Helper v1 (discord d.6a)",
     LoadingTitle = "Loading...",
-    LoadingSubtitle = "by GANI_DEVOP",
+    LoadingSubtitle = "by GANI",
     ConfigurationSaving = {
         Enabled = false,
     },
-    KeySystem = true,
+    KeySystem = false,
     KeySettings = {
         Title = "Key System",
         Subtitle = "Enter access key",
