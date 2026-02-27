@@ -3,11 +3,11 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
     Name = "Sea Helper v1 (discord d.6a)",
     LoadingTitle = "Loading...",
-    LoadingSubtitle = "by GANI",
+    LoadingSubtitle = "By GANI",
     ConfigurationSaving = {
         Enabled = false,
     },
-    KeySystem = false,
+    KeySystem = true,
     KeySettings = {
         Title = "Key System",
         Subtitle = "Enter access key",
@@ -25,7 +25,7 @@ local ESPTab = Window:CreateTab("ESP", 4483362458)
 -- ⚡ Boat Speed Slider
 MainTab:CreateSlider({
     Name = "Boat Speed",
-    Range = {0, 500},
+    Range = {0, 510},
     Increment = 1,
     Suffix = "Studs/s",
     CurrentValue = 0,
