@@ -1,7 +1,9 @@
 # SEAHELPERHUB
 Enjoy playing blox fruit with this script 
 # Esp mirage shop
-# Makes the boat 5 times faster 
+# Auto sail
+# Autofarm chest so op +stop if item
+# Makes the boat 6 times faster 
 # Remove all fogs
 # Remove all rocks
 # KEYLESS🔥🔥
