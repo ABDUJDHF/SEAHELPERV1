@@ -1,4 +1,4 @@
-# SEAHELPERHUB
+# SEAHELPERHUB/GANI HUB
 Enjoy playing blox fruit with this script 
 # Esp mirage shop
 # Auto sail
